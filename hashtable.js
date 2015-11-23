@@ -1,18 +1,15 @@
 
 
-var hash_function = function(input_str, hash_table_size)
-{
+function hash_function(input_str, hash_table_size) {
 	var hash = 0;
-	var R = 32; // where R is small prime
-	for(var i = 0; i < input_str.length; i++)
-	{
+	var R = 31; // where R is small prime
+	for(var i = 0; i < input_str.length; i++) {
 		hash = (R * hash + input_str.charCodeAt(i)) % hash_table_size;
 	}
 	return hash
 }
 
-var HashTable = function(default_size)
-{
+function HashTable(default_size) {
 	if(typeof(default_size) === "undefined")
 		default_size = 64; // default size = 64
 
@@ -22,19 +19,16 @@ var HashTable = function(default_size)
 	this.table = new Array(this.size);
 
 	/*
-		resize hashtable 
+		resize hashtable
 	*/
-	this.resize = function()
-	{
+	this.resize = function() {
 		this.size = this.size * 2;
 		var new_table = new Array(this.size);
-		for(var i = 0; i < this.table.length; i++)
-		{
+		for(var i = 0; i < this.table.length; i++) {
 			if(this.table[i] === undefined)
 				continue;
 			var chain = this.table[i];
-			for(var a = 0; a < chain.length; a++)
-			{
+			for(var a = 0; a < chain.length; a++) {
 				var pair = chain[a];
 				var hash = hash_function(pair[0], this.size);
 				if(new_table[hash] === undefined)
@@ -47,15 +41,12 @@ var HashTable = function(default_size)
 	/*
 		set key value
 	*/
-	this.set = function(key, value)
-	{
-		if(this.elem_num / this.size >= 0.7)
-		{
+	this.set = function(key, value) {
+		if(this.elem_num / this.size >= 0.7) {
 			this.resize(); // increase size
 		}
 		var hash = hash_function(key, this.size);
-		if(this.table[hash] === undefined) 
-		{
+		if(this.table[hash] === undefined) {
 			this.table[hash] = [];
 		}
 		this.table[hash].push([key, value]);
@@ -65,13 +56,11 @@ var HashTable = function(default_size)
 	/*
 		get value according to key
 	*/
-	this.get = function(key)
-	{
+	this.get = function(key) {
 		var hash = hash_function(key, this.size);
 		var chain = this.table[hash];
 		if(chain === undefined) return "undefined";
-		for(var i = 0; i < chain.length; i++)
-		{
+		for(var i = 0; i < chain.length; i++) {
 			if(chain[i][0] === key)
 				return chain[i][1];
 		}
@@ -93,11 +82,11 @@ console.log(hash_function("Hifa", 5));
 */
 
 
-
+/*
 var t = new HashTable();
 t.set("Hello", 12);
 t.set("Hellogh", 13);
 t.set("Helloddf", 15);
 console.log(t.get("Helloddfh")); // => undefined
 console.log(t.get("Hello"));     // => 12
-
+*/
